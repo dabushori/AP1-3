@@ -17,8 +17,3 @@ void searchInCache(const std::string &searchedFunction,
 void searchInCache(const std::string &searchedFunction,
                    const std::string &inputfile, const std::string &outputfile);
 } // namespace cache_manager
-
-// ex3.out matrix (add|multiply) <input_file_m1> <input_file_m2> <output_file>
-// ex3.out image (rotate|convert) <input_file> <output_file>
-// ex3.out hash <algorithm> <input_file> <output_file>
-// ex3.out cache (clear|search)
