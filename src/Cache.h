@@ -12,7 +12,6 @@
 #define IMAGECACHE_PATH "src/bin/cache/image_cache"
 #define HASHCACHE_PATH "src/bin/cache/hash_cache"
 
-
 namespace cache {
 
 class Cache {
@@ -22,9 +21,11 @@ private:
 
 public:
   Cache(const std::string &fileName, int numOfArgs);
-  void save(std::string function, const std::vector<std::string> &fileNames) const;
-  std::string search(const std::vector<std::string> &inputs) const;
+  void save(std::string function,
+            const std::vector<std::string> &fileNames) const;
+  std::string search(const std::string &function,
+                     const std::vector<std::string> &inputs) const;
   void clear() const;
 };
 
-}
+} // namespace cache
