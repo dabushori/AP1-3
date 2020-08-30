@@ -8,6 +8,11 @@
 #include <string.h>
 #include <string>
 #include <vector>
+#include <regex>
+
+#define MATCACHE_PATH "src/bin/cache/matCache.txt"
+#define IMAGECACHE_PATH "src/bin/cache/imageCache/"
+
 
 namespace cache {
 
@@ -17,16 +22,19 @@ protected:
 
 public:
   Cache(const std::string &fileName);
-  void save(const std::vector<std::string> &lines) const;
+  virtual void save(const std::vector<std::string> &lines) const =0;
   virtual std::vector<std::string>
   search(const std::vector<std::string> &lines) const = 0;
   virtual void clear() const = 0;
 };
 
 class MatCache : public Cache {
+private:
+  std::vector<std::string> getResult(const std::vector<std::string> &cache, const std::vector<std::string> &input) const;
 public:
   // constructor
-  MatCache(const std::string &fileName);
+  MatCache();
+  virtual void save(const std::vector<std::string> &lines) const override;
   virtual std::vector<std::string>
   search(const std::vector<std::string> &lines) const override;
   virtual void clear() const override;
@@ -35,7 +43,8 @@ public:
 class ImageCache : public Cache {
 public:
   // constructor
-  ImageCache(const std::string &fileName);
+  ImageCache();
+  virtual void save(const std::vector<std::string> &lines) const override;
   virtual std::vector<std::string>
   search(const std::vector<std::string> &lines) const override;
   virtual void clear() const override;

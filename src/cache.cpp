@@ -4,12 +4,57 @@ namespace cache {
 
 Cache::Cache(const std::string &fileName) { m_fileName = fileName; }
 
-MatCache::MatCache(const std::string &fileName) : Cache(fileName){};
+MatCache::MatCache() : Cache("matCache.txt"){};
 
-ImageCache::ImageCache(const std::string &fileName) : Cache(fileName){};
+ImageCache::ImageCache() : Cache("imageCache/"){};
 
-void Cache::save(const std::vector<std::string> &lines) const {
-  std::string path = ""; // need the path
+std::vector<std::string> MatCache::getResult(const std::vector<std::string> &cache,
+                                   const std::vector<std::string> &input) const {
+
+  if (cache.size() < input.size()) {
+    return std::vector<std::string>();
+  }
+
+  uint32_t resultStart = 0;
+  bool found = false;
+  for (auto i = 0; i < cache.size(); ++i) {
+    if (!found && cache[i] == input[0]) {
+      for (auto j = 0; j < input.size(); ++j) {
+        if (i + j >= cache.size()) {
+          return std::vector<std::string>();
+        }
+        if (cache[i + j] != input[j]) {
+          found = false;
+          break;
+        }
+        found = true;
+      }
+      if (found) {
+        resultStart = i + input.size();
+        break;
+      }
+    }
+  }
+
+  if (!found) {
+    return std::vector<std::string>();
+  }
+
+  std::regex regex("(mult|add)");
+  std::vector<std::string> result;
+  uint32_t index = resultStart + 1;
+  std::string line = cache[index];
+  while (!std::regex_match(line, regex) && index < cache.size()) {
+    result.push_back(line);
+    ++index;
+    line = cache[index];
+  }
+
+  return result;
+}
+
+void MatCache::save(const std::vector<std::string> &lines) const {
+  std::string path = MATCACHE_PATH;
   path.append(m_fileName);
   std::ofstream out(path, std::ios::trunc);
   if (!out) {
@@ -25,7 +70,7 @@ void Cache::save(const std::vector<std::string> &lines) const {
 }
 
 void MatCache::clear() const {
-  std::string path = ""; // need the path
+  std::string path = MATCACHE_PATH;
   path.append(m_fileName);
   std::ifstream clear(path);
   if (!clear.good()) {
@@ -36,42 +81,27 @@ void MatCache::clear() const {
   }
 }
 
-std::vector<std::string>
-MatCache::search(const std::vector<std::string> &lines) const {
-  std::string path = ""; // need the path
+std::vector<std::string> MatCache::search(const std::vector<std::string> &lines) const {
+  std::string path = MATCACHE_PATH;
   path.append(m_fileName);
-  if (!search) {
+  std::ifstream in(path);
+  if (!in) {
     // error
   }
-  // function to reed lines from file
-  std::ifstream in(path);
-  std::vector<std::string> fileLines;
+  std::vector<std::string> cacheLines;
   std::string str;
   while (getline(in, str)) {
-    fileLines.push_back(str);
+    cacheLines.push_back(str);
   }
-  for (auto it = fileLines.begin(); it != fileLines.end(); ++it) {
-    if (lines[1].compare(*it) == 0) {
-    }
+  if (!in) {
+    // error
   }
-
-  //   Add / Mult
-  //   lmatrix:
-  //   1, 2, 3
-  //   4, 5, 6
-  //   7, 8, 9
-  //   rmatrix:
-  //   1, 2, 3
-  //   4, 5, 6
-  //   7, 8, 9
-  //   result:
-  //   1, 2, 3
-  //   4, 5, 6
-  //   7, 8, 9
+  std::vector<std::string> result = getResult(cacheLines, lines);
+  return result;
 }
 
 void ImageCache::clear() const {
-  std::string path = ""; // need the path
+  std::string path = IMAGECACHE_PATH;
   path.append(m_fileName);
   std::ifstream clear(path);
   if (!clear.good()) {
@@ -83,7 +113,8 @@ void ImageCache::clear() const {
     fileLines.push_back(str);
   }
   std::for_each(fileLines.begin(), fileLines.end(), [](std::string &str) {
-    std::string imageName = "" + str; // need a path
+    std::string path = IMAGECACHE_PATH;
+    std::string imageName = path + str;
     if (remove(imageName.c_str()) != 0) {
       // error
     }
@@ -92,5 +123,17 @@ void ImageCache::clear() const {
     // error
   }
 }
+
+  std::vector<std::string> ImageCache::search(const std::vector<std::string> &lines) const {
+    std::ifstream file(lines[0]);
+    auto info = std::vector<char>{std::istreambuf_iterator<char>{file}, std::istreambuf_iterator<char>{}};
+    
+    
+    for (auto it = info.begin(); it != info.end(); ++it) {
+
+    }
+  }
+
+
 
 } // namespace cache
