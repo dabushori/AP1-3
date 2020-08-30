@@ -1,6 +1,10 @@
 #include <string>
+#include <vector>
 
 namespace cache_manager {
+bool isValidFile(const std::string &path);
+std::vector<std::string> readFileLines(std::ifstream in);
+
 void addMatrices(const std::string &inputfile1, const std::string &inputfile2,
                  const std::string &outputfile);
 void multiplyMatrices(const std::string &inputfile1,
