@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <regex>
 
 namespace mat_parser {
 std::vector<std::string> matToText(const matrix::Mat &matrix) {
@@ -31,6 +32,11 @@ matrix::Mat textToMat(const std::vector<std::string> &text) {
   std::vector<std::string> copy = text;
   for (auto it = copy.begin(); it != copy.end(); ++it) {
     deleteSpaces(*it);
+    std::string line = *it;
+    std::regex number("\\d+\\.?\\d+");
+    if (!std::regex_match(line, number)) {
+      // error
+    }
   }
 
   uint32_t height = text.size(),
@@ -38,9 +44,24 @@ matrix::Mat textToMat(const std::vector<std::string> &text) {
                                  [](const char &c) { return c == ','; }) +
                    1;
 
+  for (std::string line : text) {
+    uint32_t numOfvals = std::count_if(line.begin(), line.end(),
+                                       [](const char &c) { return c == ','; }) +
+                         1;
+    if (numOfvals != width) {
+      // error
+    }
+  }
+
   matrix::Mat matrix(height, width);
   for (uint32_t i = 0; i < height; ++i) {
+    std::string line = text[i];
+    int start = 0, end = 0;
     for (uint32_t j = 0; j < width; ++j) {
+      end = line.find_first_of(',', start);
+      std::string val = line.substr(start, end - start);
+      matrix.setValue(i, j, std::stod(val));
+      start = end + 1;
     }
   }
   return matrix;
