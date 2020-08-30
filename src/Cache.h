@@ -9,8 +9,8 @@
 #include <vector>
 
 #define MATCACHE_PATH "src/bin/cache/mat_cache"
-#define MATCACHE_PATH "src/bin/cache/image_cache"
-#define MATCACHE_PATH "src/bin/cache/hash_cache"
+#define IMAGECACHE_PATH "src/bin/cache/image_cache"
+#define HASHCACHE_PATH "src/bin/cache/hash_cache"
 
 
 namespace cache {
@@ -21,11 +21,10 @@ private:
   int m_numOfArgs;
 
 public:
-  Cache(const std::string &fileName);
-  virtual void save(const std::vector<std::string> &lines) const =0;
-  virtual std::vector<std::string>
-  search(const std::vector<std::string> &lines) const = 0;
-  virtual void clear() const = 0;
+  Cache(const std::string &fileName, int numOfArgs);
+  void save(std::string function, const std::vector<std::string> &fileNames) const;
+  std::string search(const std::vector<std::string> &inputs) const;
+  void clear() const;
 };
 
 }
