@@ -12,6 +12,10 @@
 #include "cache_manager.h"
 #include "exceptions.h"
 
+#define MATCACHE_PATH "src/bin/cache/mat_cache"
+#define IMAGECACHE_PATH "src/bin/cache/image_cache"
+#define HASHCACHE_PATH "src/bin/cache/hash_cache"
+
 #define INSIDE_CACHE_PATH "src/bin/cache/"
 
 namespace cache {
