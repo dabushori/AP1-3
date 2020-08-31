@@ -9,53 +9,57 @@
 // ex3.out cache (clear|search)
 
 int main(int argc, char **argv) {
-  if (strcmp(argv[1], "matrix")) {
-    if (argc != 5) {
+  if (!strcmp(argv[1], "matrix")) {
+    if (argc != 6) {
       // error
     }
-    if (strcmp(argv[2], "add")) {
+    if (!strcmp(argv[2], "add")) {
       cache_manager::addMatrices(argv[3], argv[4], argv[5]);
-    } else if (strcmp(argv[2], "multiply")) {
-      cache_manager::multiplyMatrices(argv[3], argv[4], argv[5]);
+    } else if (!strcmp(argv[2], "multiply")) {
+      cache_manager::multMatrices(argv[3], argv[4], argv[5]);
     } else {
       // error
     }
 
-  } else if (strcmp(argv[1], "image")) {
+  } else if (!strcmp(argv[1], "image")) {
     if (argc != 5) {
       // error
     }
-    if (strcmp(argv[2], "rotate")) {
+    if (!strcmp(argv[2], "rotate")) {
       cache_manager::rotateImage(argv[3], argv[4]);
-    } else if (strcmp(argv[2], "convert")) {
-      cache_manager::convertImage(argv[3], argv[4]);
+    } else if (!strcmp(argv[2], "convert")) {
+      cache_manager::convertImageToGrayscale(argv[3], argv[4]);
     } else {
       // error
     }
 
-  } else if (strcmp(argv[1], "hash")) {
+  } else if (!strcmp(argv[1], "hash")) {
     if (argc != 5) {
       // error
     }
-    if (strcmp(argv[2], "crc32")) {
-
+    if (!strcmp(argv[2], "crc32")) {
+      cache_manager::hash(argv[3], argv[4]);
     } else {
       // error
     }
 
-  } else if (strcmp(argv[1], "cache")) {
-    if (strcmp(argv[2], "clear")) {
+  } else if (!strcmp(argv[1], "cache")) {
+    if (!strcmp(argv[2], "clear")) {
       if (argc != 3) {
         // error
       }
       cache_manager::clearCache();
-    } else if (strcmp(argv[2], "search")) {
-      if (argc == 6) {
-        cache_manager::searchInCache(argv[3], argv[4], argv[5]);
-      } else if (argc == 7) {
-        cache_manager::searchInCache(argv[3], argv[4], argv[5], argv[6]);
-      } else {
-        // error
+    } else if (!strcmp(argv[2], "search")) {
+      if (argc == 7 && !strcmp(argv[3], "matrix")) {
+        cache_manager::searchInMatrixCache(argv[4], argv[5], argv[6]);
+      } else if (argc == 6) {
+        if (!strcmp(argv[3], "image")) {
+          cache_manager::searchInImageCache(argv[4], argv[5]);
+        } else if (!strcmp(argv[3], "hash")) {
+          cache_manager::searchInHashCache(argv[4], argv[5]);
+        } else {
+          // error
+        }
       }
     } else {
       // error
