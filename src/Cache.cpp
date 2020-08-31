@@ -16,9 +16,9 @@ std::string Cache::getResult(const std::vector<std::string> &cacheFile,
 
   uint32_t resultStart = 0;
   bool found = false;
-  for (auto i = 0; i < cacheFile.size(); ++i) {
+  for (std::size_t i = 0; i < cacheFile.size(); ++i) {
     if (!found && cacheFile[i] == input[0]) {
-      for (auto j = 0; j < input.size(); ++j) {
+      for (std::size_t j = 0; j < input.size(); ++j) {
         if (i + j >= cacheFile.size()) {
           return "";
         }
@@ -40,7 +40,7 @@ std::string Cache::getResult(const std::vector<std::string> &cacheFile,
   }
 
   uint32_t index = resultStart + 1;
-  std::string result = cacheFile[index];
+  return cacheFile[index];
 }
 
 std::string getEnding(const std::string &file) {
@@ -49,11 +49,12 @@ std::string getEnding(const std::string &file) {
   for (auto i = index; i < file.size(); ++i) {
     ending += file[i];
   }
+  return ending;
 }
 
 void Cache::save(std::string function,
                  const std::vector<std::string> &fileNames) const {
-  if (fileNames.size() != m_numOfArgs + 1) {
+  if (fileNames.size() != static_cast<std::size_t>(m_numOfArgs + 1)) {
     throw exceptions::CacheException("Error in save - numOfArgs problem");
   }
 
@@ -141,7 +142,7 @@ void Cache::save(std::string function,
 
 std::string Cache::search(const std::string &function,
                           const std::vector<std::string> &inputs) const {
-  if (inputs.size() != m_numOfArgs + 1) {
+  if (inputs.size() != static_cast<std::size_t>(m_numOfArgs + 1)) {
     return "";
   }
   std::vector<std::string> lines = inputs;

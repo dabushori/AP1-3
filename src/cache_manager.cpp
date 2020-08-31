@@ -15,8 +15,9 @@ namespace cache_manager {
 std::vector<std::string> readFileLines(const std::string &filename) {
   std::ifstream in(filename);
   if (!in) {
-    in.close() throw exceptions::CacheException(
-        "error while opening the file " + filename);
+    in.close();
+    throw exceptions::CacheException("error while opening the file " +
+                                     filename);
   }
   std::vector<std::string> lines;
   std::string str;
@@ -53,8 +54,8 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
             "error while opening the default file to save the result in cache");
       }
 
-      for (auto i = 0; i < resultMat.getHeight(); ++i) {
-        for (auto j = 0; j < resultMat.getWidth(); ++j) {
+      for (uint32_t i = 0; i < resultMat.getHeight(); ++i) {
+        for (uint32_t j = 0; j < resultMat.getWidth(); ++j) {
           std::cout << resultMat(i, j);
           out << resultMat(i, j);
           if (j != resultMat.getWidth() - 1) {
@@ -76,8 +77,8 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
         throw exceptions::CacheException(
             "error while trying to write to the file " + output);
       }
-      for (auto i = 0; i < resultMat.getHeight(); ++i) {
-        for (auto j = 0; j < resultMat.getWidth(); ++j) {
+      for (uint32_t i = 0; i < resultMat.getHeight(); ++i) {
+        for (uint32_t j = 0; j < resultMat.getWidth(); ++j) {
           out << resultMat(i, j);
           if (j != resultMat.getWidth() - 1) {
             out << ",";
@@ -137,8 +138,8 @@ void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
             "error while opening the default file to save the result in cache");
       }
 
-      for (auto i = 0; i < resultMat.getHeight(); ++i) {
-        for (auto j = 0; j < resultMat.getWidth(); ++j) {
+      for (uint32_t i = 0; i < resultMat.getHeight(); ++i) {
+        for (uint32_t j = 0; j < resultMat.getWidth(); ++j) {
           std::cout << resultMat(i, j);
           out << resultMat(i, j);
           if (j != resultMat.getWidth() - 1) {
@@ -160,8 +161,8 @@ void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
         throw exceptions::CacheException(
             "error while trying to write to the file " + output);
       }
-      for (auto i = 0; i < resultMat.getHeight(); ++i) {
-        for (auto j = 0; j < resultMat.getWidth(); ++j) {
+      for (uint32_t i = 0; i < resultMat.getHeight(); ++i) {
+        for (uint32_t j = 0; j < resultMat.getWidth(); ++j) {
           out << resultMat(i, j);
           if (j != resultMat.getWidth() - 1) {
             out << ",";
@@ -279,8 +280,8 @@ void convertImageToGrayscale(const std::string &input,
 uint32_t calculateFileCRC32(const std::string &filename) {
   std::ifstream in(filename, std::ios::binary);
   if (!in) {
-    in.close() throw exceptions::CacheException("error while opening file " +
-                                                filename);
+    in.close();
+    throw exceptions::CacheException("error while opening file " + filename);
   }
 
   std::vector<unsigned char> data((std::istream_iterator<unsigned char>(in)),

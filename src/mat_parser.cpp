@@ -21,7 +21,7 @@ std::vector<std::string> matToText(const matrix::Mat &matrix) {
 }
 
 void deleteSpaces(std::string &str) {
-  for (int i = 0; i < str.size(); ++i) {
+  for (std::size_t i = 0; i < str.size(); ++i) {
     if (str[i] == ' ' || str[i] == '\t') {
       str.erase(i);
     }
