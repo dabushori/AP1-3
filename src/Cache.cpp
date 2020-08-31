@@ -61,13 +61,48 @@ void Cache::save(std::string function,
   std::vector<std::string> newLines;
   std::string resultName;
   std::ifstream in(m_fileName);
+  if (!in) {
+    in.close();
+    throw exceptions::CacheException(
+        "Error in save - cant read in Cache file");
+  }
   if (!in.good()) {
     newLines.push_back("1");
     resultName = function + "1";
   } else {
-    std::string number;
-    std::getline(in, number);
-    resultName = function + number;
+    std::string newNumber;
+    std::getline(in, newNumber);
+    int intNumber = std::stoi(newNumber);
+    intNumber++;
+    newNumber = std::to_string(intNumber);
+    resultName = function + newNumber;
+    std::vector<std::string> oldLines;
+    std::string str;
+    while (getline(in, str)) {
+    oldLines.push_back(str);
+    }
+    oldLines[0] = newNumber;
+    std::ofstream newFile(m_fileName, std::ios::trunc);
+    if (!newFile) {
+    newFile.close();
+    throw exceptions::CacheException(
+        "Error in save - problem in overwrite Cache file");
+    }
+    for (std::string str : oldLines) {
+      newFile << str << std::endl;
+    }
+    if (!newFile) {
+    newFile.close();
+    throw exceptions::CacheException(
+        "Error in save - problem in overwrite Cache file2");
+    }
+    newFile.close();
+
+  }
+  if (!in) {
+    in.close();
+    throw exceptions::CacheException(
+        "Error in save - problem after read in Cache file");
   }
   in.close();
   newLines.push_back(function);
