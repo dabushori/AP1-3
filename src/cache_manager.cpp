@@ -299,7 +299,7 @@ uint32_t hash(const std::string &input) {
   std::vector<std::string> inputs;
   inputs.push_back(input);
 
-  auto result = cache.search("hash", inputs);
+  auto result = cache.search("crc32", inputs);
 
   if (result == "") {
     auto resultHash = calculateFileCRC32(input);
@@ -317,7 +317,7 @@ uint32_t hash(const std::string &input) {
     auto toSave = inputs;
     toSave.push_back(DEFAULT_RESULT_FILE);
 
-    cache.save("hash", toSave);
+    cache.save("crc32", toSave);
 
     return resultHash;
   }
