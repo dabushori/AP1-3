@@ -8,7 +8,7 @@
 // ex3.out hash <algorithm> <input_file> <output_file>
 // ex3.out cache (clear|search)
 
-int main(int argc, char **argv) {
+void ex3Format(int argc, char **argv) {
   if (!strcmp(argv[1], "matrix")) {
     if (argc != 6) {
       // error
@@ -66,5 +66,15 @@ int main(int argc, char **argv) {
     }
   } else {
     // error
+  }
+}
+
+int main(int argc, char **argv) {
+  try {
+    ex3Format(argc, argv);
+  } catch (const std::exception &e) {
+    std::cerr << e.what() << std::endl;
+  } catch (...) {
+    std::cerr << "unkown error has been accured" << std::endl;
   }
 }
