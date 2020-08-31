@@ -81,6 +81,7 @@ void ex3Format(int argc, char **argv) {
 int main(int argc, char **argv) {
   try {
     ex3Format(argc, argv);
+    system("exec rm -r default_result_file.txt");
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
   } catch (...) {

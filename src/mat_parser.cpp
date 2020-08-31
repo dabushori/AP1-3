@@ -33,11 +33,6 @@ matrix::Mat textToMat(const std::vector<std::string> &text) {
   for (auto it = copy.begin(); it != copy.end(); ++it) {
     deleteSpaces(*it);
     std::string line = *it;
-    std::regex number("\\d+\\.?\\d+");
-    if (!std::regex_match(line, number)) {
-      throw exceptions::CacheException("the matrix file is not in the right "
-                                       "format (there's a non numeric value)");
-    }
   }
 
   uint32_t height = text.size(),
