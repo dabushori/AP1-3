@@ -1,19 +1,28 @@
 #include "cache_manager.h"
 
 #include "Cache.h"
+#include "Mat.h"
+#include "bmp_tester.hpp"
+#include "crc32.h"
 #include "mat_parser.h"
 
 #include <string>
 #include <vector>
 
+#define DEFAULT_RESULT_FILE "default_result_file.txt"
+
 namespace cache_manager {
 std::vector<std::string> readFileLines(const std::string &filename) {
   std::ifstream in(filename);
+  if (!in) {
+    // error
+  }
   std::vector<std::string> lines;
   std::string str;
   while (getline(in, str)) {
     lines.push_back(str);
   }
+  in.close();
   return lines;
 }
 
@@ -25,24 +34,332 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
   inputs.push_back(lmatrix);
   inputs.push_back(rmatrix);
 
-  auto result = cache.search(inputs);
+  auto result = cache.search("add", inputs);
+
+  if (result == "") {
+    matrix::Mat left = mat_parser::textToMat(readFileLines(lmatrix));
+    matrix::Mat right = mat_parser::textToMat(readFileLines(rmatrix));
+    matrix::Mat resultMat = left.add(right);
+
+    auto toSave = inputs;
+
+    if (output == "stdout") {
+
+      std::ofstream out(DEFAULT_RESULT_FILE, std::ios::trunc);
+      if (!out) {
+        // error
+      }
+
+      for (auto i = 0; i < resultMat.getHeight(); ++i) {
+        for (auto j = 0; j < resultMat.getWidth(); ++j) {
+          std::cout << resultMat(i, j);
+          out << resultMat(i, j);
+          if (j != resultMat.getWidth() - 1) {
+            std::cout << ",";
+            out << ",";
+          }
+        }
+        std::cout << std::endl;
+        out << std::endl;
+      }
+
+      out.close();
+      toSave.push_back(DEFAULT_RESULT_FILE);
+
+    } else {
+      std::ofstream out(output);
+      if (!out) {
+        // error
+      }
+      for (auto i = 0; i < resultMat.getHeight(); ++i) {
+        for (auto j = 0; j < resultMat.getWidth(); ++j) {
+          out << resultMat(i, j);
+          if (j != resultMat.getWidth() - 1) {
+            out << ",";
+          }
+        }
+        out << std::endl;
+      }
+      out.close();
+
+      toSave.push_back(output);
+    }
+    cache.save("add", toSave);
+
+  } else {
+    auto fileLines = readFileLines(result);
+    if (output == "stdout") {
+      for (std::string line : fileLines) {
+        std::cout << line << std::endl;
+      }
+    } else {
+      std::ofstream out(output);
+      if (!out) {
+        // error
+      }
+      for (std::string line : fileLines) {
+        out << line << std::endl;
+      }
+      out.close();
+    }
+  }
 }
 void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
-                  const std::string &output);
+                  const std::string &output) {
+  cache::Cache cache(MATCACHE_PATH, 2);
 
-void rotateImage(const std::string &input, const std::string &output);
+  std::vector<std::string> inputs;
+  inputs.push_back(lmatrix);
+  inputs.push_back(rmatrix);
+
+  auto result = cache.search("mult", inputs);
+
+  if (result == "") {
+    matrix::Mat left = mat_parser::textToMat(readFileLines(lmatrix));
+    matrix::Mat right = mat_parser::textToMat(readFileLines(rmatrix));
+    matrix::Mat resultMat = left.multiplyMatrices(right);
+
+    auto toSave = inputs;
+
+    if (output == "stdout") {
+
+      std::ofstream out(DEFAULT_RESULT_FILE, std::ios::trunc);
+      if (!out) {
+        // error
+      }
+
+      for (auto i = 0; i < resultMat.getHeight(); ++i) {
+        for (auto j = 0; j < resultMat.getWidth(); ++j) {
+          std::cout << resultMat(i, j);
+          out << resultMat(i, j);
+          if (j != resultMat.getWidth() - 1) {
+            std::cout << ",";
+            out << ",";
+          }
+        }
+        std::cout << std::endl;
+        out << std::endl;
+      }
+
+      out.close();
+      toSave.push_back(DEFAULT_RESULT_FILE);
+
+    } else {
+      std::ofstream out(output);
+      if (!out) {
+        // error
+      }
+      for (auto i = 0; i < resultMat.getHeight(); ++i) {
+        for (auto j = 0; j < resultMat.getWidth(); ++j) {
+          out << resultMat(i, j);
+          if (j != resultMat.getWidth() - 1) {
+            out << ",";
+          }
+        }
+        out << std::endl;
+      }
+      out.close();
+
+      toSave.push_back(output);
+    }
+    cache.save("mult", toSave);
+
+  } else {
+    auto fileLines = readFileLines(result);
+    if (output == "stdout") {
+      for (std::string line : fileLines) {
+        std::cout << line << std::endl;
+      }
+    } else {
+      std::ofstream out(output);
+      if (!out) {
+        // error
+      }
+      for (std::string line : fileLines) {
+        out << line << std::endl;
+      }
+      out.close();
+    }
+  }
+}
+
+void rotateImage(const std::string &input, const std::string &output) {
+  cache::Cache cache(IMAGECACHE_PATH, 1);
+
+  std::vector<std::string> inputs;
+  inputs.push_back(input);
+
+  auto result = cache.search("rotate", inputs);
+
+  if (result == "") {
+    testing::bmp::rotate_image(input, output);
+    auto toSave = inputs;
+    toSave.push_back(output);
+    cache.save("rotate", toSave);
+  } else {
+    std::ifstream in(result);
+    if (!in) {
+      // error
+    }
+    auto content = std::vector<char>{std::istreambuf_iterator<char>{in},
+                                     std::istreambuf_iterator<char>{}};
+
+    in.close();
+
+    std::ofstream out(output, std::ios::trunc | std::ios::binary);
+    if (!out) {
+      // error
+    }
+
+    for (auto byte : content) {
+      out << byte << std::endl;
+    }
+
+    out.close();
+  }
+}
 void convertImageToGrayscale(const std::string &input,
-                             const std::string &output);
+                             const std::string &output) {
+  cache::Cache cache(IMAGECACHE_PATH, 1);
 
-void hash(const std::string &input, const std::string &output);
-uint32_t hash(const std::string &input);
+  std::vector<std::string> inputs;
+  inputs.push_back(input);
 
-void clearCache();
+  auto result = cache.search("convert", inputs);
+
+  if (result == "") {
+    testing::bmp::rotate_image(input, output);
+    auto toSave = inputs;
+    toSave.push_back(output);
+    cache.save("convert", toSave);
+  } else {
+    std::ifstream in(result);
+    if (!in) {
+      // error
+    }
+    auto content = std::vector<char>{std::istreambuf_iterator<char>{in},
+                                     std::istreambuf_iterator<char>{}};
+
+    in.close();
+
+    std::ofstream out(output, std::ios::trunc | std::ios::binary);
+    if (!out) {
+      // error
+    }
+
+    for (auto byte : content) {
+      out << byte << std::endl;
+    }
+
+    out.close();
+  }
+}
+
+uint32_t calculateFileCRC32(const std::string &filename) {
+  std::ifstream in(filename, std::ios::binary);
+  if (!in) {
+    std::cout << "error" << std::endl;
+  }
+
+  std::vector<unsigned char> data((std::istream_iterator<unsigned char>(in)),
+                                  (std::istream_iterator<unsigned char>()));
+  in.close();
+  return calculate_crc32c(0, data.data(), data.size());
+}
+
+void hash(const std::string &input, const std::string &output) {
+  auto result = hash(input);
+  if (output == "stdout") {
+    std::cout << result << std::endl;
+  } else {
+    std::ofstream out(output, std::ios::trunc);
+    if (!out) {
+      // error
+    }
+    out << result;
+    out.close();
+  }
+}
+
+uint32_t hash(const std::string &input) {
+  cache::Cache cache(HASHCACHE_PATH, 1);
+
+  std::vector<std::string> inputs;
+  inputs.push_back(input);
+
+  auto result = cache.search("hash", inputs);
+
+  if (result == "") {
+    auto resultHash = calculateFileCRC32(input);
+
+    std::ofstream out(DEFAULT_RESULT_FILE, std::ios::trunc);
+    if (!out) {
+      // error
+    }
+
+    out << resultHash;
+
+    out.close();
+
+    auto toSave = inputs;
+    toSave.push_back(DEFAULT_RESULT_FILE);
+
+    cache.save("hash", toSave);
+
+    return resultHash;
+  }
+
+  std::ifstream in(result);
+  std::string line;
+  if (!std::getline(in, line)) {
+    // error
+  }
+  return std::stoi(line);
+}
+
+void clearCache() {
+  cache::Cache matCache(MATCACHE_PATH, 2);
+  matCache.clear();
+  cache::Cache imageCache(IMAGECACHE_PATH, 1);
+  imageCache.clear();
+  cache::Cache hashCache(HASHCACHE_PATH, 1);
+  hashCache.clear();
+}
+
 void searchInMatrixCache(const std::string &function,
                          const std::string &lmatrix,
-                         const std::string &rmatrix);
-void searchInImageCache(const std::string &function, const std::string &lmatrix,
-                        const std::string &rmatrix);
-void searchInHashCache(const std::string &function, const std::string &lmatrix,
-                       const std::string &rmatrix);
+                         const std::string &rmatrix) {
+  cache::Cache cache(MATCACHE_PATH, 2);
+  std::vector<std::string> inputs;
+  inputs.push_back(lmatrix);
+  inputs.push_back(rmatrix);
+  auto result = cache.search(function, inputs);
+  if (result == "") {
+    std::cout << "result didn't found in cache" << std::endl;
+  } else {
+    std::cout << "result found in cache" << std::endl;
+  }
+}
+void searchInImageCache(const std::string &function, const std::string &input) {
+  cache::Cache cache(IMAGECACHE_PATH, 1);
+  std::vector<std::string> inputs;
+  inputs.push_back(input);
+  auto result = cache.search(function, inputs);
+  if (result == "") {
+    std::cout << "result didn't found in cache" << std::endl;
+  } else {
+    std::cout << "result found in cache" << std::endl;
+  }
+}
+void searchInHashCache(const std::string &function, const std::string &input) {
+  cache::Cache cache(HASHCACHE_PATH, 1);
+  std::vector<std::string> inputs;
+  inputs.push_back(input);
+  auto result = cache.search(function, inputs);
+  if (result == "") {
+    std::cout << "result didn't found in cache" << std::endl;
+  } else {
+    std::cout << "result found in cache" << std::endl;
+  }
+}
 } // namespace cache_manager

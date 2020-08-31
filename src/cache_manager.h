@@ -19,8 +19,6 @@ void clearCache();
 void searchInMatrixCache(const std::string &function,
                          const std::string &lmatrix,
                          const std::string &rmatrix);
-void searchInImageCache(const std::string &function, const std::string &lmatrix,
-                        const std::string &rmatrix);
-void searchInHashCache(const std::string &function, const std::string &lmatrix,
-                       const std::string &rmatrix);
+void searchInImageCache(const std::string &function, const std::string &input);
+void searchInHashCache(const std::string &function, const std::string &input);
 } // namespace cache_manager
