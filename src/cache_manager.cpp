@@ -15,7 +15,8 @@ namespace cache_manager {
 std::vector<std::string> readFileLines(const std::string &filename) {
   std::ifstream in(filename);
   if (!in) {
-    // error
+    throw exceptions::CacheException("error while opening the file " +
+                                     filename);
   }
   std::vector<std::string> lines;
   std::string str;
@@ -47,7 +48,8 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
 
       std::ofstream out(DEFAULT_RESULT_FILE, std::ios::trunc);
       if (!out) {
-        // error
+        throw exceptions::CacheException(
+            "error while opening the default file to save the result in cache");
       }
 
       for (auto i = 0; i < resultMat.getHeight(); ++i) {
@@ -69,7 +71,8 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
     } else {
       std::ofstream out(output);
       if (!out) {
-        // error
+        throw exceptions::CacheException(
+            "error while trying to write to the file " + output);
       }
       for (auto i = 0; i < resultMat.getHeight(); ++i) {
         for (auto j = 0; j < resultMat.getWidth(); ++j) {
@@ -95,7 +98,8 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
     } else {
       std::ofstream out(output);
       if (!out) {
-        // error
+        throw exceptions::CacheException(
+            "error while trying to write to the file " + output);
       }
       for (std::string line : fileLines) {
         out << line << std::endl;
@@ -125,7 +129,8 @@ void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
 
       std::ofstream out(DEFAULT_RESULT_FILE, std::ios::trunc);
       if (!out) {
-        // error
+        throw exceptions::CacheException(
+            "error while opening the default file to save the result in cache");
       }
 
       for (auto i = 0; i < resultMat.getHeight(); ++i) {
@@ -147,7 +152,8 @@ void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
     } else {
       std::ofstream out(output);
       if (!out) {
-        // error
+        throw exceptions::CacheException(
+            "error while trying to write to the file " + output);
       }
       for (auto i = 0; i < resultMat.getHeight(); ++i) {
         for (auto j = 0; j < resultMat.getWidth(); ++j) {
@@ -173,7 +179,8 @@ void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
     } else {
       std::ofstream out(output);
       if (!out) {
-        // error
+        throw exceptions::CacheException(
+            "error while trying to write to the file " + output);
       }
       for (std::string line : fileLines) {
         out << line << std::endl;
@@ -199,7 +206,8 @@ void rotateImage(const std::string &input, const std::string &output) {
   } else {
     std::ifstream in(result);
     if (!in) {
-      // error
+      throw exceptions::CacheException("error while opening the file " +
+                                       result);
     }
     auto content = std::vector<char>{std::istreambuf_iterator<char>{in},
                                      std::istreambuf_iterator<char>{}};
@@ -208,7 +216,8 @@ void rotateImage(const std::string &input, const std::string &output) {
 
     std::ofstream out(output, std::ios::trunc | std::ios::binary);
     if (!out) {
-      // error
+      throw exceptions::CacheException(
+          "error while trying to write to the file " + output);
     }
 
     for (auto byte : content) {
@@ -235,7 +244,8 @@ void convertImageToGrayscale(const std::string &input,
   } else {
     std::ifstream in(result);
     if (!in) {
-      // error
+      throw exceptions::CacheException("error while opening the file " +
+                                       result);
     }
     auto content = std::vector<char>{std::istreambuf_iterator<char>{in},
                                      std::istreambuf_iterator<char>{}};
@@ -244,7 +254,8 @@ void convertImageToGrayscale(const std::string &input,
 
     std::ofstream out(output, std::ios::trunc | std::ios::binary);
     if (!out) {
-      // error
+      throw exceptions::CacheException(
+          "error while trying to write to the file " + output);
     }
 
     for (auto byte : content) {
@@ -274,7 +285,8 @@ void hash(const std::string &input, const std::string &output) {
   } else {
     std::ofstream out(output, std::ios::trunc);
     if (!out) {
-      // error
+      throw exceptions::CacheException(
+          "error while trying to write to the file " + output);
     }
     out << result;
     out.close();
@@ -294,7 +306,8 @@ uint32_t hash(const std::string &input) {
 
     std::ofstream out(DEFAULT_RESULT_FILE, std::ios::trunc);
     if (!out) {
-      // error
+      throw exceptions::CacheException(
+          "error while opening the default file to save the result in cache");
     }
 
     out << resultHash;
@@ -311,8 +324,8 @@ uint32_t hash(const std::string &input) {
 
   std::ifstream in(result);
   std::string line;
-  if (!std::getline(in, line)) {
-    // error
+  if (!in || !std::getline(in, line)) {
+    throw exceptions::CacheException("error while reading the file " + result);
   }
   return std::stoi(line);
 }

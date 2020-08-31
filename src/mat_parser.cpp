@@ -35,7 +35,8 @@ matrix::Mat textToMat(const std::vector<std::string> &text) {
     std::string line = *it;
     std::regex number("\\d+\\.?\\d+");
     if (!std::regex_match(line, number)) {
-      // error
+      throw exceptions::CacheException("the matrix file is not in the right "
+                                       "format (there's a non numeric value)");
     }
   }
 
@@ -49,7 +50,9 @@ matrix::Mat textToMat(const std::vector<std::string> &text) {
                                        [](const char &c) { return c == ','; }) +
                          1;
     if (numOfvals != width) {
-      // error
+      throw exceptions::CacheException(
+          "the matrix file is not in the right format (the matrix rows are not "
+          "in the same size)");
     }
   }
 
