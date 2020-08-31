@@ -12,6 +12,7 @@ void rotateImage(const std::string &input, const std::string &output);
 void convertImageToGrayscale(const std::string &input,
                              const std::string &output);
 
+uint32_t calculateFileCRC32(const std::string &filename);
 void hash(const std::string &input, const std::string &output);
 uint32_t hash(const std::string &input);
 

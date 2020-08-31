@@ -90,9 +90,13 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
 
       toSave.push_back(output);
     }
+
     cache.save("add", toSave);
 
   } else {
+
+    std::cout << "got it from cache" << std::endl;
+
     auto fileLines = readFileLines(result);
     if (output == "stdout") {
       for (std::string line : fileLines) {

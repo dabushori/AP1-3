@@ -74,25 +74,26 @@ void Cache::save(std::string function,
   std::string oldResult = "";
 
   if (fileNames.size() == 2) {
-    uint32_t input = cache_manager::hash(fileNames[0]);
+    uint32_t input = cache_manager::calculateFileCRC32(fileNames[0]);
     newLines.push_back(std::to_string(input));
     resultName = INSIDE_CACHE_PATH + resultName + getEnding(fileNames[1]);
     newLines.push_back(resultName);
     oldResult = fileNames[1];
   }
   if (fileNames.size() == 3) {
-    uint32_t input1 = cache_manager::hash(fileNames[0]);
-    uint32_t input2 = cache_manager::hash(fileNames[1]);
+    uint32_t input1 = cache_manager::calculateFileCRC32(fileNames[0]);
+    uint32_t input2 = cache_manager::calculateFileCRC32(fileNames[1]);
     newLines.push_back(std::to_string(input1));
     newLines.push_back(std::to_string(input2));
     resultName = INSIDE_CACHE_PATH + resultName + getEnding(fileNames[2]);
     newLines.push_back(resultName);
     oldResult = fileNames[2];
+
   } else {
     throw exceptions::CacheException("Error in save - not 2 or 3 inputs");
   }
 
-  std::ofstream out(m_fileName, std::ios::app | std::ios::trunc);
+  std::ofstream out(m_fileName, std::ios::app);
   if (!out) {
     out.close();
     throw exceptions::CacheException(
@@ -116,6 +117,7 @@ void Cache::save(std::string function,
   }
   auto content = std::vector<char>{std::istreambuf_iterator<char>{searchResult},
                                    std::istreambuf_iterator<char>{}};
+
   if (!searchResult) {
     searchResult.close();
     throw exceptions::CacheException(

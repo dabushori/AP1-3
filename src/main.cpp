@@ -1,6 +1,7 @@
 #include "cache_manager.h"
 #include "exceptions.h"
 
+#include <fstream>
 #include <iostream>
 #include <string.h>
 
@@ -81,7 +82,13 @@ void ex3Format(int argc, char **argv) {
 int main(int argc, char **argv) {
   try {
     ex3Format(argc, argv);
-    system("exec rm -r default_result_file.txt");
+
+    std::ifstream in("default_result_file.txt");
+    if (in.good()) {
+      system("exec rm -r default_result_file.txt");
+    }
+    in.close();
+
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
   } catch (...) {
