@@ -5,6 +5,9 @@
 #include <string.h>
 
 void ex3Format(int argc, char **argv) {
+  if (argc == 1) {
+    throw exceptions::CacheException("error - didn't recieve any arguments");
+  }
   if (!strcmp(argv[1], "matrix")) {
     if (argc != 6) {
       throw exceptions::CacheException(
