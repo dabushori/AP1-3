@@ -6,6 +6,7 @@
 #include "mat_parser.h"
 #include "matrix.h"
 
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -350,8 +351,10 @@ uint32_t hash(const std::string &input) {
 }
 
 void clearCache() {
-  cache::Cache matCache(MATCACHE_PATH, 2);
-  matCache.clear();
+  if (!std::filesystem::is_empty("src/bin/cache")) {
+    cache::Cache matCache(MATCACHE_PATH, 2);
+    matCache.clear();
+  }
 }
 
 void searchInMatrixCache(const std::string &function,
