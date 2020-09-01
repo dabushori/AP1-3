@@ -7,7 +7,7 @@ add_compile_options(-Wall -Wextra -pedantic -Werror -Wnon-virtual-dtor -Wshadow)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 # add the .cpp files of the project
-add_executable(ex3 
+add_executable(ex3.out 
                 bmp/bmp.cpp 
                 bmp/bmp_tester.cpp 
                 cache/Cache.cpp 
@@ -21,10 +21,10 @@ add_executable(ex3
                 )
 
 # add the library
-target_link_libraries(ex3 matrix)
+target_link_libraries(ex3.out matrix)
 
 # add the folders of the .h files (to be able to include them)
-target_include_directories(ex3 PUBLIC
+target_include_directories(ex3.out PUBLIC
                             ${CMAKE_SOURCE_DIR}/bmp
                             ${CMAKE_SOURCE_DIR}/cache
                             ${CMAKE_SOURCE_DIR}/exceptions
@@ -37,7 +37,7 @@ target_include_directories(ex3 PUBLIC
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/cache)
 
 # include the src directory
-target_link_directories(ex3 PUBLIC ${PROJECT_SOURCE_DIR})
+target_link_directories(ex3.out PUBLIC ${PROJECT_SOURCE_DIR})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
