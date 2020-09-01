@@ -6,8 +6,8 @@ matrix::matrix rotate90Degrees(const matrix::matrix &matrix) {
   uint32_t height = matrix.getHeight();
   uint32_t width = matrix.getWidth();
   matrix::matrix result(width, height);
-  for (uint32_t i = 0; i < height; i++) {
-    for (uint32_t j = 0; j < width; j++) {
+  for (uint32_t i = 0; i < height; ++i) {
+    for (uint32_t j = 0; j < width; ++j) {
       result.setValue(j, height - 1 - i, matrix(i, j));
     }
   }
