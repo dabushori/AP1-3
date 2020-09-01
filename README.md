@@ -1,15 +1,31 @@
 # Assignment Three - Cache Manager
-## Ori Dabush - 212945760
-## Yorai Roth Hazan - 213251861
+### Ori Dabush - 212945760
+### Yorai Roth Hazan - 213251861
 * * *
+## Solid:
+* Single Responsibility principle - each file and class has is own job and responsibility.
+  * cache_manager is solving the problems. (each function deal with anothe problem)
+  * Cache is storing the results.
+  * mat_parser is parsing matrix to strings and opposite way.
+  * main is getting the variables and call the cache manager.
+* Open/closed principle -
+  * we cant change the functions or they will not work.
+  * we can use cache manger and cache for other problems and extend them.
+* Liskov substitution principle - we did not use inheritance or implemention. (no interface or SuperClass)
+* Interface segregation principle - we did not use inheritance or implemention. (no interface or SuperClass)
+* Dependency Inversion principle - we did not use inheritance or implemention. (no interface or SuperClass)
+### The last three are used to make our code more open to extentions but we did not need them in this assignment. (we used the in an empty way)
+* * *
+## Design:
 ### In this assignment we created:
 * cache_manager.cpp + cache_manager.h - solving the three problems that u gave us using Cache.
 * Cache.cpp + Cache.h - Cache class holding the results.
-* mat_parser.cpp + mat_parser.h - parsing Mat to strings and opposite way.
+* mat_parser.cpp + mat_parser.h - parsing Matrix to strings and opposite way.
 * exceptions.cpp + exceptions.h - added a cache exception. (not new)
 * crc32.c + crc32.h - given files.
+* main.cpp - getting the variables and call the cache manager.
 * * *
-##  cache_manager (namespace) is doing the following functions:
+## cache_manager (namespace) is doing the following functions:
 * The following functions are doing their job using Cache
   * addMatrices - add the matrices.
   * multMatrices - multiply the matrices.
