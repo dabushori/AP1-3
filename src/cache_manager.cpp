@@ -1,10 +1,10 @@
 #include "cache_manager.h"
 
 #include "Cache.h"
-#include "Mat.h"
 #include "bmp_tester.hpp"
 #include "crc32.h"
 #include "mat_parser.h"
+#include "matrix.h"
 
 #include <string>
 #include <vector>
@@ -39,9 +39,9 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
   auto result = cache.search("add", inputs);
 
   if (result == "") {
-    matrix::Mat left = mat_parser::textToMat(readFileLines(lmatrix));
-    matrix::Mat right = mat_parser::textToMat(readFileLines(rmatrix));
-    matrix::Mat resultMat = left.add(right);
+    matrix::matrix left = mat_parser::textToMat(readFileLines(lmatrix));
+    matrix::matrix right = mat_parser::textToMat(readFileLines(rmatrix));
+    matrix::matrix resultMat = left + right;
 
     auto toSave = inputs;
 
@@ -127,9 +127,9 @@ void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
   auto result = cache.search("mult", inputs);
 
   if (result == "") {
-    matrix::Mat left = mat_parser::textToMat(readFileLines(lmatrix));
-    matrix::Mat right = mat_parser::textToMat(readFileLines(rmatrix));
-    matrix::Mat resultMat = left.multiplyMatrices(right);
+    matrix::matrix left = mat_parser::textToMat(readFileLines(lmatrix));
+    matrix::matrix right = mat_parser::textToMat(readFileLines(rmatrix));
+    matrix::matrix resultMat = left * right;
 
     auto toSave = inputs;
 

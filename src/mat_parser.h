@@ -1,4 +1,4 @@
-#include "Mat.h"
+#include "matrix.h"
 
 #include <string>
 #include <vector>
@@ -20,7 +20,7 @@ void deleteSpaces(std::string &str);
  * @return std::vector<std::string> the lines of the file that represent the
  * given matrix
  */
-std::vector<std::string> matToText(const matrix::Mat &matrix);
+std::vector<std::string> matToText(const matrix::matrix &matrix);
 
 /**
  * @brief convert a text file into a Mat object
@@ -29,5 +29,5 @@ std::vector<std::string> matToText(const matrix::Mat &matrix);
  * file in it)
  * @return matrix::Mat the matrix that was in the text file
  */
-matrix::Mat textToMat(const std::vector<std::string> &text);
+matrix::matrix textToMat(const std::vector<std::string> &text);
 } // namespace mat_parser

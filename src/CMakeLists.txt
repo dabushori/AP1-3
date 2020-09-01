@@ -14,7 +14,7 @@ add_executable(ex3
                 crc32.cpp 
                 exceptions.cpp 
                 main.cpp 
-                Mat.cpp 
+                matrix.cpp 
                 mat_parser.cpp)
 target_link_libraries(ex3 matrix)
 

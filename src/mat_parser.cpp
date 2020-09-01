@@ -5,7 +5,7 @@
 #include <regex>
 
 namespace mat_parser {
-std::vector<std::string> matToText(const matrix::Mat &matrix) {
+std::vector<std::string> matToText(const matrix::matrix &matrix) {
   std::vector<std::string> text;
   for (uint32_t i = 0; i < matrix.getHeight(); ++i) {
     std::string line = "";
@@ -28,7 +28,7 @@ void deleteSpaces(std::string &str) {
   }
 }
 
-matrix::Mat textToMat(const std::vector<std::string> &text) {
+matrix::matrix textToMat(const std::vector<std::string> &text) {
   std::vector<std::string> copy = text;
   for (auto it = copy.begin(); it != copy.end(); ++it) {
     deleteSpaces(*it);
@@ -51,7 +51,7 @@ matrix::Mat textToMat(const std::vector<std::string> &text) {
     }
   }
 
-  matrix::Mat matrix(height, width);
+  matrix::matrix matrix(height, width);
   for (uint32_t i = 0; i < height; ++i) {
     std::string line = text[i];
     int start = 0, end = 0;
