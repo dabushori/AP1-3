@@ -14,7 +14,7 @@
 * Liskov substitution principle - we did not use inheritance or implemention. (no interface or SuperClass)
 * Interface segregation principle - we did not use inheritance or implemention. (no interface or SuperClass)
 * Dependency Inversion principle - we did not use inheritance or implemention. (no interface or SuperClass)
-### The last three are used to make our code more open to extentions but we did not need them in this assignment. (we used the in an empty way)
+### The last three are used to make our code more open to extentions but we did not need them in this assignment. (we used them in an empty way)
 * * *
 ## Design:
 ### In this assignment we created:
