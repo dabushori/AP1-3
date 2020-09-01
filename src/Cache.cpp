@@ -183,8 +183,6 @@ std::string Cache::search(const std::string &function,
     uint32_t hash = cache_manager::calculateFileCRC32(str);
     lines.push_back(std::to_string(hash));
   }
-  
-  
 
   std::vector<std::string> fileLines;
   std::string str;
@@ -197,6 +195,6 @@ std::string Cache::search(const std::string &function,
   return result;
 }
 
-void Cache::clear() const { system("exec rm -r src/bin/cache/*"); }
+void Cache::clear() const { system("exec rm -r src/bin/cache/*.*"); }
 
 } // namespace cache

@@ -352,10 +352,6 @@ uint32_t hash(const std::string &input) {
 void clearCache() {
   cache::Cache matCache(MATCACHE_PATH, 2);
   matCache.clear();
-  cache::Cache imageCache(IMAGECACHE_PATH, 1);
-  imageCache.clear();
-  cache::Cache hashCache(HASHCACHE_PATH, 1);
-  hashCache.clear();
 }
 
 void searchInMatrixCache(const std::string &function,
