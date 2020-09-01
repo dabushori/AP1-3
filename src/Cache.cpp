@@ -100,19 +100,21 @@ void Cache::save(std::string function,
   if (fileNames.size() == 2) {
     uint32_t input = cache_manager::calculateFileCRC32(fileNames[0]);
     newLines.push_back(std::to_string(input));
-    resultName = INSIDE_CACHE_PATH + resultName + getEnding(fileNames[1]);
+    std::string ending = getEnding(fileNames[1]);
+    resultName = INSIDE_CACHE_PATH + resultName;
+    resultName += ending;
     newLines.push_back(resultName);
     oldResult = fileNames[1];
-  }
-  if (fileNames.size() == 3) {
+  } else if (fileNames.size() == 3) {
     uint32_t input1 = cache_manager::calculateFileCRC32(fileNames[0]);
     uint32_t input2 = cache_manager::calculateFileCRC32(fileNames[1]);
     newLines.push_back(std::to_string(input1));
     newLines.push_back(std::to_string(input2));
-    resultName = INSIDE_CACHE_PATH + resultName + getEnding(fileNames[2]);
+    std::string ending = getEnding(fileNames[2]);
+    resultName = INSIDE_CACHE_PATH + resultName;
+    resultName += ending;
     newLines.push_back(resultName);
     oldResult = fileNames[2];
-
   } else {
     throw exceptions::CacheException("Error in save - not 2 or 3 inputs");
   }
@@ -172,17 +174,17 @@ std::string Cache::search(const std::string &function,
     return "";
   }
   std::ifstream in(m_fileName);
-  if (!in) {
-    in.close();
-    throw exceptions::CacheException(
-        "Error in search - cant read the Cache lines p1");
-  }
-  if (!in.good()) {
+  if (!in || !in.good()) {
     return "";
   }
-  std::vector<std::string> lines = inputs;
-  std::vector<std::string>::iterator it = lines.begin();
-  lines.insert(it, function);
+  std::vector<std::string> lines;
+  lines.push_back(function);
+  for (std::string str : inputs) {
+    uint32_t hash = cache_manager::calculateFileCRC32(str);
+    lines.push_back(std::to_string(hash));
+  }
+  
+  
 
   std::vector<std::string> fileLines;
   std::string str;
