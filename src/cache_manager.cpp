@@ -251,7 +251,7 @@ void convertImageToGrayscale(const std::string &input,
   auto result = cache.search("convert", inputs);
 
   if (result == "") {
-    testing::bmp::rotate_image(input, output);
+    testing::bmp::convert_to_grayscale(input, output);
     auto toSave = inputs;
     toSave.push_back(output);
     cache.save("convert", toSave);
