@@ -39,7 +39,7 @@ std::string Cache::getResult(const std::vector<std::string> &cacheFile,
     return "";
   }
 
-  uint32_t index = resultStart + 1;
+  uint32_t index = resultStart;
   return cacheFile[index];
 }
 
@@ -61,10 +61,6 @@ void Cache::save(std::string function,
   std::vector<std::string> newLines;
   std::string resultName;
   std::ifstream in(m_fileName);
-  if (!in) {
-    in.close();
-    throw exceptions::CacheException("Error in save - cant read in Cache file");
-  }
   if (!in.good()) {
     newLines.push_back("1");
     resultName = function + "1";
@@ -87,8 +83,8 @@ void Cache::save(std::string function,
       throw exceptions::CacheException(
           "Error in save - problem in overwrite Cache file");
     }
-    for (std::string s : oldLines) {
-      newFile << s << std::endl;
+    for (std::string string : oldLines) {
+      newFile << string << std::endl;
     }
     if (!newFile) {
       newFile.close();
@@ -96,11 +92,6 @@ void Cache::save(std::string function,
           "Error in save - problem in overwrite Cache file2");
     }
     newFile.close();
-  }
-  if (!in) {
-    in.close();
-    throw exceptions::CacheException(
-        "Error in save - problem after read in Cache file");
   }
   in.close();
   newLines.push_back(function);
@@ -177,28 +168,26 @@ void Cache::save(std::string function,
 
 std::string Cache::search(const std::string &function,
                           const std::vector<std::string> &inputs) const {
-  if (inputs.size() != static_cast<std::size_t>(m_numOfArgs + 1)) {
+  if (inputs.size() != static_cast<std::size_t>(m_numOfArgs)) {
     return "";
   }
-  std::vector<std::string> lines = inputs;
-  std::vector<std::string>::iterator it = lines.begin();
-  lines.insert(it, function);
-
   std::ifstream in(m_fileName);
   if (!in) {
     in.close();
     throw exceptions::CacheException(
         "Error in search - cant read the Cache lines p1");
   }
+  if (!in.good()) {
+    return "";
+  }
+  std::vector<std::string> lines = inputs;
+  std::vector<std::string>::iterator it = lines.begin();
+  lines.insert(it, function);
+
   std::vector<std::string> fileLines;
   std::string str;
   while (getline(in, str)) {
     fileLines.push_back(str);
-  }
-  if (!in) {
-    in.close();
-    throw exceptions::CacheException(
-        "Error in search - cant read the Cache lines p2");
   }
   in.close();
 
