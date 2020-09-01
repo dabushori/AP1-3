@@ -1,5 +1,7 @@
 #include "Cache.h"
 
+#include "Paths.h"
+
 namespace cache {
 
 Cache::Cache(const std::string &fileName, const int &numOfArgs) {
@@ -101,7 +103,7 @@ void Cache::save(std::string function,
     uint32_t input = cache_manager::calculateFileCRC32(fileNames[0]);
     newLines.push_back(std::to_string(input));
     std::string ending = getEnding(fileNames[1]);
-    resultName = INSIDE_CACHE_PATH + resultName;
+    resultName = paths::getInsideCachePath() + resultName;
     resultName += ending;
     newLines.push_back(resultName);
     oldResult = fileNames[1];
@@ -111,7 +113,7 @@ void Cache::save(std::string function,
     newLines.push_back(std::to_string(input1));
     newLines.push_back(std::to_string(input2));
     std::string ending = getEnding(fileNames[2]);
-    resultName = INSIDE_CACHE_PATH + resultName;
+    resultName = paths::getInsideCachePath() + resultName;
     resultName += ending;
     newLines.push_back(resultName);
     oldResult = fileNames[2];

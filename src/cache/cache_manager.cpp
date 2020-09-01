@@ -1,6 +1,7 @@
 #include "cache_manager.h"
 
 #include "Cache.h"
+#include "Paths.h"
 #include "bmp_tester.hpp"
 #include "crc32.h"
 #include "mat_parser.h"
@@ -9,8 +10,6 @@
 #include <filesystem>
 #include <string>
 #include <vector>
-
-#define DEFAULT_RESULT_FILE "default_result_file.txt"
 
 namespace cache_manager {
 std::vector<std::string> readFileLines(const std::string &filename) {
@@ -31,7 +30,7 @@ std::vector<std::string> readFileLines(const std::string &filename) {
 
 void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
                  const std::string &output) {
-  cache::Cache cache(cache::Cache::MATCACHE_PATH, 2);
+  cache::Cache cache(paths::getMatCachePath(), 2);
 
   std::vector<std::string> inputs;
   inputs.push_back(lmatrix);
@@ -48,7 +47,7 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
 
     if (output == "stdout") {
 
-      std::ofstream out(DEFAULT_RESULT_FILE, std::ios::trunc);
+      std::ofstream out(paths::getDefaultResultFilePath(), std::ios::trunc);
       if (!out) {
         out.close();
         throw exceptions::CacheException(
@@ -69,7 +68,7 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
       }
 
       out.close();
-      toSave.push_back(DEFAULT_RESULT_FILE);
+      toSave.push_back(paths::getDefaultResultFilePath());
 
     } else {
       std::ofstream out(output);
@@ -119,7 +118,7 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
 }
 void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
                   const std::string &output) {
-  cache::Cache cache(cache::Cache::MATCACHE_PATH, 2);
+  cache::Cache cache(paths::getMatCachePath(), 2);
 
   std::vector<std::string> inputs;
   inputs.push_back(lmatrix);
@@ -136,7 +135,7 @@ void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
 
     if (output == "stdout") {
 
-      std::ofstream out(DEFAULT_RESULT_FILE, std::ios::trunc);
+      std::ofstream out(paths::getDefaultResultFilePath(), std::ios::trunc);
       if (!out) {
         out.close();
         throw exceptions::CacheException(
@@ -157,7 +156,7 @@ void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
       }
 
       out.close();
-      toSave.push_back(DEFAULT_RESULT_FILE);
+      toSave.push_back(paths::getDefaultResultFilePath());
 
     } else {
       std::ofstream out(output);
@@ -203,7 +202,7 @@ void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
 }
 
 void rotateImage(const std::string &input, const std::string &output) {
-  cache::Cache cache(cache::Cache::IMAGECACHE_PATH, 1);
+  cache::Cache cache(paths::getImageCachePath(), 1);
 
   std::vector<std::string> inputs;
   inputs.push_back(input);
@@ -243,7 +242,7 @@ void rotateImage(const std::string &input, const std::string &output) {
 }
 void convertImageToGrayscale(const std::string &input,
                              const std::string &output) {
-  cache::Cache cache(cache::Cache::IMAGECACHE_PATH, 1);
+  cache::Cache cache(paths::getImageCachePath(), 1);
 
   std::vector<std::string> inputs;
   inputs.push_back(input);
@@ -312,7 +311,7 @@ void hash(const std::string &input, const std::string &output) {
 }
 
 uint32_t hash(const std::string &input) {
-  cache::Cache cache(cache::Cache::HASHCACHE_PATH, 1);
+  cache::Cache cache(paths::getHashCachePath(), 1);
 
   std::vector<std::string> inputs;
   inputs.push_back(input);
@@ -322,7 +321,7 @@ uint32_t hash(const std::string &input) {
   if (result == "") {
     auto resultHash = calculateFileCRC32(input);
 
-    std::ofstream out(DEFAULT_RESULT_FILE, std::ios::trunc);
+    std::ofstream out(paths::getDefaultResultFilePath(), std::ios::trunc);
     if (!out) {
       out.close();
       throw exceptions::CacheException(
@@ -334,7 +333,7 @@ uint32_t hash(const std::string &input) {
     out.close();
 
     auto toSave = inputs;
-    toSave.push_back(DEFAULT_RESULT_FILE);
+    toSave.push_back(paths::getDefaultResultFilePath());
 
     cache.save("crc32", toSave);
 
@@ -351,8 +350,8 @@ uint32_t hash(const std::string &input) {
 }
 
 void clearCache() {
-  if (!std::filesystem::is_empty("src/bin/cache")) {
-    cache::Cache matCache(cache::Cache::MATCACHE_PATH, 2);
+  if (!std::filesystem::is_empty(paths::getInsideCachePath())) {
+    cache::Cache matCache(paths::getMatCachePath(), 2);
     matCache.clear();
   }
 }
@@ -360,7 +359,7 @@ void clearCache() {
 void searchInMatrixCache(const std::string &function,
                          const std::string &lmatrix,
                          const std::string &rmatrix) {
-  cache::Cache cache(cache::Cache::MATCACHE_PATH, 2);
+  cache::Cache cache(paths::getMatCachePath(), 2);
   std::vector<std::string> inputs;
   inputs.push_back(lmatrix);
   inputs.push_back(rmatrix);
@@ -372,7 +371,7 @@ void searchInMatrixCache(const std::string &function,
   }
 }
 void searchInImageCache(const std::string &function, const std::string &input) {
-  cache::Cache cache(cache::Cache::IMAGECACHE_PATH, 1);
+  cache::Cache cache(paths::getImageCachePath(), 1);
   std::vector<std::string> inputs;
   inputs.push_back(input);
   auto result = cache.search(function, inputs);
@@ -383,7 +382,7 @@ void searchInImageCache(const std::string &function, const std::string &input) {
   }
 }
 void searchInHashCache(const std::string &function, const std::string &input) {
-  cache::Cache cache(cache::Cache::HASHCACHE_PATH, 1);
+  cache::Cache cache(paths::getHashCachePath(), 1);
   std::vector<std::string> inputs;
   inputs.push_back(input);
   auto result = cache.search(function, inputs);

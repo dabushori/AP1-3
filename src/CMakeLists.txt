@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(ex2 VERSION 0.1.0)
+project(ex3 VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 17)
 add_compile_options(-Wall -Wextra -pedantic -Werror -Wnon-virtual-dtor -Wshadow)
@@ -16,7 +16,9 @@ add_executable(ex3
                 exceptions/exceptions.cpp 
                 main.cpp 
                 matrix/matrix.cpp 
-                matrix/mat_parser.cpp)
+                matrix/mat_parser.cpp
+                paths/Paths.cpp
+                )
 
 # add the library
 target_link_libraries(ex3 matrix)
@@ -28,6 +30,7 @@ target_include_directories(ex3 PUBLIC
                             ${CMAKE_SOURCE_DIR}/exceptions
                             ${CMAKE_SOURCE_DIR}/hash
                             ${CMAKE_SOURCE_DIR}/matrix
+                            ${CMAKE_SOURCE_DIR}/paths
                             )
 
 # make the cache directory

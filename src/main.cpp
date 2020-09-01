@@ -1,6 +1,7 @@
 #include "cache_manager.h"
 #include "exceptions.h"
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string.h>
@@ -80,6 +81,7 @@ void ex3Format(int argc, char **argv) {
 }
 
 int main(int argc, char **argv) {
+
   try {
     ex3Format(argc, argv);
 
