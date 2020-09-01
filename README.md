@@ -42,4 +42,7 @@
 ## We added to exceptions files (h + cpp) a CacheException to deal with exceptions in cache.
 * * *
 ## Tests
+* tested the matrix add and multiply with a couple of matrices.
+* tested the image with lena and more images that we created last excersie.
+* the hash worked in our cache. (it worked)
 * * *
