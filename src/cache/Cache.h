@@ -11,12 +11,6 @@
 #include "cache_manager.h"
 #include "exceptions.h"
 
-#define MATCACHE_PATH "src/bin/cache/mat_cache.txt"
-#define IMAGECACHE_PATH "src/bin/cache/image_cache.txt"
-#define HASHCACHE_PATH "src/bin/cache/hash_cache.txt"
-
-#define INSIDE_CACHE_PATH "src/bin/cache/"
-
 namespace cache {
 
 class Cache {
@@ -27,6 +21,10 @@ private:
                         const std::vector<std::string> &input) const;
 
 public:
+  static constexpr char* MATCACHE_PATH = "src/bin/cache/mat_cache.txt";
+  static constexpr char* IMAGECACHE_PATH = "src/bin/cache/image_cache.txt";
+  static constexpr char* HASHCACHE_PATH = "src/bin/cache/hash_cache.txt";
+  static constexpr char* INSIDE_CACHE_PATH = "src/bin/cache/";
   /**
    * @brief Construct a new Cache object
    *

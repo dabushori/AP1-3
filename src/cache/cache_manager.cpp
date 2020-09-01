@@ -31,7 +31,7 @@ std::vector<std::string> readFileLines(const std::string &filename) {
 
 void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
                  const std::string &output) {
-  cache::Cache cache(MATCACHE_PATH, 2);
+  cache::Cache cache(cache::Cache::MATCACHE_PATH, 2);
 
   std::vector<std::string> inputs;
   inputs.push_back(lmatrix);
@@ -119,7 +119,7 @@ void addMatrices(const std::string &lmatrix, const std::string &rmatrix,
 }
 void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
                   const std::string &output) {
-  cache::Cache cache(MATCACHE_PATH, 2);
+  cache::Cache cache(cache::Cache::MATCACHE_PATH, 2);
 
   std::vector<std::string> inputs;
   inputs.push_back(lmatrix);
@@ -203,7 +203,7 @@ void multMatrices(const std::string &lmatrix, const std::string &rmatrix,
 }
 
 void rotateImage(const std::string &input, const std::string &output) {
-  cache::Cache cache(IMAGECACHE_PATH, 1);
+  cache::Cache cache(cache::Cache::IMAGECACHE_PATH, 1);
 
   std::vector<std::string> inputs;
   inputs.push_back(input);
@@ -243,7 +243,7 @@ void rotateImage(const std::string &input, const std::string &output) {
 }
 void convertImageToGrayscale(const std::string &input,
                              const std::string &output) {
-  cache::Cache cache(IMAGECACHE_PATH, 1);
+  cache::Cache cache(cache::Cache::IMAGECACHE_PATH, 1);
 
   std::vector<std::string> inputs;
   inputs.push_back(input);
@@ -312,7 +312,7 @@ void hash(const std::string &input, const std::string &output) {
 }
 
 uint32_t hash(const std::string &input) {
-  cache::Cache cache(HASHCACHE_PATH, 1);
+  cache::Cache cache(cache::Cache::HASHCACHE_PATH, 1);
 
   std::vector<std::string> inputs;
   inputs.push_back(input);
@@ -352,7 +352,7 @@ uint32_t hash(const std::string &input) {
 
 void clearCache() {
   if (!std::filesystem::is_empty("src/bin/cache")) {
-    cache::Cache matCache(MATCACHE_PATH, 2);
+    cache::Cache matCache(cache::Cache::MATCACHE_PATH, 2);
     matCache.clear();
   }
 }
@@ -360,7 +360,7 @@ void clearCache() {
 void searchInMatrixCache(const std::string &function,
                          const std::string &lmatrix,
                          const std::string &rmatrix) {
-  cache::Cache cache(MATCACHE_PATH, 2);
+  cache::Cache cache(cache::Cache::MATCACHE_PATH, 2);
   std::vector<std::string> inputs;
   inputs.push_back(lmatrix);
   inputs.push_back(rmatrix);
@@ -372,7 +372,7 @@ void searchInMatrixCache(const std::string &function,
   }
 }
 void searchInImageCache(const std::string &function, const std::string &input) {
-  cache::Cache cache(IMAGECACHE_PATH, 1);
+  cache::Cache cache(cache::Cache::IMAGECACHE_PATH, 1);
   std::vector<std::string> inputs;
   inputs.push_back(input);
   auto result = cache.search(function, inputs);
@@ -383,7 +383,7 @@ void searchInImageCache(const std::string &function, const std::string &input) {
   }
 }
 void searchInHashCache(const std::string &function, const std::string &input) {
-  cache::Cache cache(HASHCACHE_PATH, 1);
+  cache::Cache cache(cache::Cache::HASHCACHE_PATH, 1);
   std::vector<std::string> inputs;
   inputs.push_back(input);
   auto result = cache.search(function, inputs);
