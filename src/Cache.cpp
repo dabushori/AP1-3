@@ -68,15 +68,15 @@ void Cache::save(std::string function,
     std::string newNumber;
     std::getline(in, newNumber);
     int intNumber = std::stoi(newNumber);
-    intNumber++;
+    ++intNumber;
     newNumber = std::to_string(intNumber);
     resultName = function + newNumber;
     std::vector<std::string> oldLines;
+    oldLines.push_back(newNumber);
     std::string str;
     while (getline(in, str)) {
       oldLines.push_back(str);
     }
-    oldLines[0] = newNumber;
     std::ofstream newFile(m_fileName, std::ios::trunc);
     if (!newFile) {
       newFile.close();

@@ -235,7 +235,7 @@ void rotateImage(const std::string &input, const std::string &output) {
     }
 
     for (auto byte : content) {
-      out << byte << std::endl;
+      out << byte;
     }
 
     out.close();
@@ -275,7 +275,7 @@ void convertImageToGrayscale(const std::string &input,
     }
 
     for (auto byte : content) {
-      out << byte << std::endl;
+      out << byte;
     }
 
     out.close();
