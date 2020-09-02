@@ -58,10 +58,3 @@ std::string getDefaultResultFilePath() {
   return paths.m_defaultResultFilePath;
 }
 } // namespace paths
-
-#define MATCACHE_PATH "src/bin/cache/mat_cache.txt"
-#define IMAGECACHE_PATH "src/bin/cache/image_cache.txt"
-#define HASHCACHE_PATH "src/bin/cache/hash_cache.txt"
-#define INSIDE_CACHE_PATH "src/bin/cache/"
-
-#define DEFAULT_RESULT_FILE "default_result_file.txt"
