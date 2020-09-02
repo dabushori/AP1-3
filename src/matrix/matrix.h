@@ -7,60 +7,60 @@
 #include <utility>
 
 namespace matrix {
-class Mat {
+class matrix {
 private:
   Matrix *m_matrix;
 
 public:
   /**
-   * @brief Construct a new Mat object
+   * @brief Construct a new matrix object
    *
    */
-  Mat();
+  matrix();
 
   /**
-   * @brief Construct a new Mat object with size height x width
+   * @brief Construct a new matrix object with size height x width
    *
    * @param height the height of the matrix
    * @param width the width of the matrix
    */
-  Mat(const uint32_t height, const uint32_t width);
+  matrix(const uint32_t &height, const uint32_t &width);
 
   /**
    * @brief copy constructor
    *
-   * @param other the other Mat object that is being copied
+   * @param other the other matrix object that is being copied
    */
-  Mat(const Mat &other);
+  matrix(const matrix &other);
 
   /**
    * @brief copy assignment operator
    *
-   * @param other the other Mat object that is being assigned
-   * @return Mat& the new Mat object that was created
+   * @param other the other matrix object that is being assigned
+   * @return matrix& the new matrix object that was created
    */
-  Mat &operator=(const Mat &other);
+  matrix &operator=(const matrix &other);
 
   /**
    * @brief move constructor
    *
-   * @param other the other Mat object that is being moved
+   * @param other the other matrix object that is being moved
    */
-  Mat(Mat &&other) noexcept;
+  matrix(matrix &&other) noexcept;
 
   /**
    * @brief move assignment operator
    *
-   * @param other the other Mat object that is being assigned
-   * @return Mat& the new Mat object that was created
+   * @param other the other matrix object that is being assigned
+   * @return matrix& the new matrix object that was created
    */
-  Mat &operator=(Mat &&other) noexcept;
+  matrix &operator=(matrix &&other) noexcept;
 
   /**
-   * @brief Destroy the Mat object
+   * @brief Destroy the matrix object
    *
    */
-  ~Mat();
+  ~matrix();
 
   /**
    * @brief Get the height of the matrix
@@ -83,32 +83,32 @@ public:
    * @param colIndex the collumn index of the cell
    * @param value the value that is being set
    */
-  void setValue(const uint32_t rowIndex, const uint32_t colIndex,
-                const double value);
+  void setValue(const uint32_t &rowIndex, const uint32_t &colIndex,
+                const double &value);
 
   /**
    * @brief add the current matrix and a given matrix
    *
    * @param other the given matrix
-   * @return Mat the result of the addition
+   * @return matrix the result of the addition
    */
-  Mat add(const Mat &other) const;
+  matrix operator+(const matrix &othr) const;
 
   /**
    * @brief multiply the current matrix and a given matrix
    *
    * @param other the given matrix
-   * @return Mat the result of the multiplication
+   * @return matrix the result of the multiplication
    */
-  Mat multiplyMatrices(const Mat &other) const;
+  matrix operator*(const matrix &other) const;
 
   /**
    * @brief multiply the current matrix by a given scalar
    *
    * @param scalar the given scalar
-   * @return Mat the result of the multiplication
+   * @return matrix the result of the multiplication
    */
-  Mat multiplyByScalar(const double scalar) const;
+  matrix operator*(const double &scalar) const;
 
   /**
    * @brief get the value (by value) in the rowIndex,colIndex cell of the
@@ -118,14 +118,15 @@ public:
    * @param colIndex the collumn index of the wanted cell
    * @return double the value that is in the cell
    */
-  double operator()(const uint32_t rowIndex, const uint32_t colIndex) const;
-
-  /**
-   * @brief rotate the matrix 90 degrees clockwise.
-   *
-   * @param matrix the matrix we want to rotate
-   * @return Mat the rotated matrix
-   */
-  Mat rotate90Degrees() const;
+  double operator()(const uint32_t &rowIndex, const uint32_t &colIndex) const;
 };
+
+/**
+ * @brief a * operator to the other side of the multiplication by a scalar
+ *
+ * @param scalar the scalar
+ * @param mat the matrix
+ * @return matrix the new matrix
+ */
+matrix operator*(const double &scalar, const matrix &mat);
 } // namespace matrix

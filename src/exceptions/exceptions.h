@@ -45,4 +45,24 @@ public:
    */
   const char *what() const noexcept override;
 };
+
+class CacheException : public std::exception {
+private:
+  std::string m_message;
+
+public:
+  /**
+   * @brief Construct a new BMP Exception object using a given string
+   *
+   * @param message the given string that is thrown
+   */
+  CacheException(const std::string &message);
+
+  /**
+   * @brief gets the error message
+   *
+   * @return const char* the error message
+   */
+  const char *what() const noexcept override;
+};
 } // namespace exceptions
