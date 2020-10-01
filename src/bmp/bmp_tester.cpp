@@ -12,10 +12,9 @@ bool isBMPFile(const std::string &path) {
           path.compare(path.size() - bmp.size(), bmp.size(), bmp) == 0);
 }
 
-bool isValidFile(const std::string &path) {
+bool isFileExist(const std::string &path) {
   std::ifstream in(path);
   if (!in) {
-    in.close();
     return false;
   }
   in.close();
@@ -26,7 +25,7 @@ void rotate_image(const std::string &imagePath, const std::string &outputPath) {
   if (!isBMPFile(imagePath)) {
     throw exceptions::BMPException("input file is not a .bmp file");
   }
-  if (!isValidFile(imagePath)) {
+  if (!isFileExist(imagePath)) {
     throw exceptions::BMPException("input file doesn't exist");
   }
   if (!isBMPFile(outputPath)) {
@@ -41,7 +40,7 @@ void convert_to_grayscale(const std::string &imagePath,
   if (!isBMPFile(imagePath)) {
     throw exceptions::BMPException("input file is not a .bmp file");
   }
-  if (!isValidFile(imagePath)) {
+  if (!isFileExist(imagePath)) {
     throw exceptions::BMPException("input file doesn't exist");
   }
   if (!isBMPFile(outputPath)) {
