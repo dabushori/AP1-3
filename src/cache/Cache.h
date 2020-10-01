@@ -57,7 +57,7 @@ public:
    * @brief a method to clear the cache
    *
    */
-  void clear() const;
+  void clear();
 };
 
 } // namespace cache

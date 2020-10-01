@@ -194,9 +194,9 @@ std::string Cache::search(const std::string &function,
   return result;
 }
 
-void Cache::clear() const {
-  for (auto file :
-       std::filesystem::recursive_directory_iterator("src/bin/cache")) {
+void Cache::clear() {
+  auto cacheDir = paths::getInsideCachePath();
+  for (auto file : std::filesystem::recursive_directory_iterator(cacheDir)) {
     std::filesystem::remove_all(file);
   }
 }
