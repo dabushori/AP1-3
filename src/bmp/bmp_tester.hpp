@@ -21,7 +21,7 @@ bool isBMPFile(const std::string &path);
  * @return true if it exists
  * @return false otherwise
  */
-bool isValidFile(const std::string &path);
+bool isFileExist(const std::string &path);
 
 /**
  * @brief Receives a path to a BMP image on the disk and rotates it 90 degrees

@@ -1,3 +1,4 @@
+#include "Paths.h"
 #include "cache_manager.h"
 #include "exceptions.h"
 
@@ -81,16 +82,13 @@ void ex3Format(int argc, char **argv) {
 }
 
 int main(int argc, char **argv) {
-
   try {
     ex3Format(argc, argv);
-
-    std::ifstream in("default_result_file.txt");
+    std::ifstream in(paths::getDefaultResultFilePath());
     if (in.good()) {
-      system("exec rm -r default_result_file.txt");
+      std::filesystem::remove(paths::getDefaultResultFilePath());
     }
     in.close();
-
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
   } catch (...) {

@@ -69,9 +69,7 @@ void Cache::save(std::string function,
   } else {
     std::string newNumber;
     std::getline(in, newNumber);
-    int intNumber = std::stoi(newNumber);
-    ++intNumber;
-    newNumber = std::to_string(intNumber);
+    newNumber = std::to_string(std::stoi(newNumber) + 1);
     resultName = function + newNumber;
     std::vector<std::string> oldLines;
     oldLines.push_back(newNumber);
@@ -85,7 +83,7 @@ void Cache::save(std::string function,
       throw exceptions::CacheException(
           "Error in save - problem in overwrite Cache file");
     }
-    for (std::string string : oldLines) {
+    for (std::string &string : oldLines) {
       newFile << string << std::endl;
     }
     if (!newFile) {
@@ -99,7 +97,7 @@ void Cache::save(std::string function,
   newLines.push_back(function);
   std::string oldResult = "";
 
-  if (fileNames.size() == 2) {
+  if (fileNames.size() == SIZE_OF_1_INPUT) {
     uint32_t input = cache_manager::calculateFileCRC32(fileNames[0]);
     newLines.push_back(std::to_string(input));
     std::string ending = getEnding(fileNames[1]);
@@ -107,7 +105,7 @@ void Cache::save(std::string function,
     resultName += ending;
     newLines.push_back(resultName);
     oldResult = fileNames[1];
-  } else if (fileNames.size() == 3) {
+  } else if (fileNames.size() == SIZE_OF_2_INPUTS) {
     uint32_t input1 = cache_manager::calculateFileCRC32(fileNames[0]);
     uint32_t input2 = cache_manager::calculateFileCRC32(fileNames[1]);
     newLines.push_back(std::to_string(input1));
@@ -127,7 +125,7 @@ void Cache::save(std::string function,
     throw exceptions::CacheException(
         "Error in save - cant write in Cache file");
   }
-  for (std::string str : newLines) {
+  for (std::string &str : newLines) {
     out << str << std::endl;
   }
   if (!out) {
@@ -139,7 +137,6 @@ void Cache::save(std::string function,
 
   std::ifstream searchResult(oldResult);
   if (!searchResult) {
-    searchResult.close();
     throw exceptions::CacheException(
         "Error in save - problem when we read result file");
   }
@@ -159,7 +156,7 @@ void Cache::save(std::string function,
     throw exceptions::CacheException(
         "Error in save - problem when we write in the new result file");
   }
-  for (char c : content) {
+  for (const char &c : content) {
     newResult << c;
   }
   if (!newResult) {
@@ -197,6 +194,10 @@ std::string Cache::search(const std::string &function,
   return result;
 }
 
-void Cache::clear() const { system("exec rm -r src/bin/cache/*.*"); }
-
+void Cache::clear() {
+  auto cacheDir = paths::getInsideCachePath();
+  for (auto file : std::filesystem::recursive_directory_iterator(cacheDir)) {
+    std::filesystem::remove_all(file);
+  }
+}
 } // namespace cache

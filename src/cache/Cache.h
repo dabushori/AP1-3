@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -10,6 +11,9 @@
 
 #include "cache_manager.h"
 #include "exceptions.h"
+
+#define SIZE_OF_1_INPUT 2
+#define SIZE_OF_2_INPUTS 3
 
 namespace cache {
 
@@ -53,7 +57,7 @@ public:
    * @brief a method to clear the cache
    *
    */
-  void clear() const;
+  void clear();
 };
 
 } // namespace cache
