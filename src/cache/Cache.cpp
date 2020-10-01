@@ -69,9 +69,7 @@ void Cache::save(std::string function,
   } else {
     std::string newNumber;
     std::getline(in, newNumber);
-    int intNumber = std::stoi(newNumber);
-    ++intNumber;
-    newNumber = std::to_string(intNumber);
+    newNumber = std::to_string(std::stoi(newNumber) + 1);
     resultName = function + newNumber;
     std::vector<std::string> oldLines;
     oldLines.push_back(newNumber);
@@ -85,7 +83,7 @@ void Cache::save(std::string function,
       throw exceptions::CacheException(
           "Error in save - problem in overwrite Cache file");
     }
-    for (std::string string : oldLines) {
+    for (std::string &string : oldLines) {
       newFile << string << std::endl;
     }
     if (!newFile) {
